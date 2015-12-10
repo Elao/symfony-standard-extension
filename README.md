@@ -1,19 +1,20 @@
 Userscripts / GreaseMonkey
 ==========================
 
-But
----
-Les userscripts sont des scripts JS destinés à enrichir le contenu de la page. Format basé sur [GreaseMonkey](http://www.greasespot.net/),
-utilisable en tant qu'extension dans Firefox, ou nativement dans Chrome
+Goal
+----
 
-Installation d'un userscript
-----------------------------
+Userscripts are JS scripts used to enrich pages.
+The script format is based on [GreaseMonkey](http://www.greasespot.net/), available as a Firefox addon, native in Chrome. 
 
-**Dans Firefox**, sur la page [`about:addons`](about:addons), une fois l'extension GreaseMonkey installée, ouvrir l'onglet 'Scripts utilisateurs', puis glisser-déposer un script dans la page
+Installation
+------------
 
-**Dans Chrome**, sur la page [`chrome://extensions`](chrome://extensions), glisser-déposer le script.
+**In Firefox**, head to [`about:addons`](about:addons), install GreaseMonkey addon, open tab 'User Scripts', then drag&drop script in page
+
+**In Chrome**, head to [`chrome://extensions`](chrome://extensions), then drag&drop the script.
 
 
-Mise à jour
------------
-Ultra compliqué, il suffit de glisser-déposer à nouveau le script dans la page d'installation, et... c'est tout
+Update
+------
+Vicious... Drag&drop again the script in installation page, and... you're done
