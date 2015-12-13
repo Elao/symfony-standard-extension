@@ -50,6 +50,7 @@
     linkContainer.appendChild(createLink('Log.io',        baseUrl + ':28778'));
     linkContainer.appendChild(createLink('OPCache',       baseUrl + ':2013'));
     linkContainer.appendChild(createLink('PGAdmin',       baseUrl + ':1980'));
+    linkContainer.appendChild(createLink('MyAdmin',       baseUrl + ':1979'));
 
     var hookContainer = document.createElement('div');
     hookContainer.innerHTML = "=";
