@@ -18,3 +18,11 @@ Installation
 Update
 ------
 Vicious... Drag&drop again the script in installation page, and... you're done
+
+Scripts
+-------
+
+The first (and only one) is elao.user.js, which purpose is to add useful toolbar in Elao's projects.
+Toolbar is default hidden, with just a discreet grey handler. Move your mouse over the handler, it appears :)
+
+![screenshot](elao.user.png)
