@@ -30,29 +30,6 @@
         return link;
     }
 
-    function check(tool) {
-        tool.url = baseUrl + ':' + tool.port;
-
-        return new Promise(function(resolve, reject) {
-            var req = new XMLHttpRequest();
-            req.open('GET', tool.url);
-
-            req.onload = function() {
-                if (req.status == 200) {
-                    resolve(tool);
-                } else {
-                    reject(Error(req.statusText));
-                }
-            };
-
-            req.onerror = function() {
-                reject(Error("Erreur réseau"));
-            };
-
-            req.send();
-        });
-    }
-
     addStyle( [
         "#userscript-tools-bar { position:fixed; top:-30px; right:0; background-color:rgba(0, 0, 0, .4); opacity: .2; border-radius : 0 0 0 4px;  transition: all 500ms; z-index:9999;}",
         "#userscript-tools-bar:hover { opacity: 1; top:0; }",
@@ -68,25 +45,12 @@
 
     var linkContainer = document.createElement('div');
 
-    var tools = [
-        {label: 'MailHog', port: 8025},
-        {label: 'Supervisor', port: 9001},
-        {label: 'Mailcatcher', port: 1080},
-        {label: 'Log.io', port: 28778},
-        {label: 'OPCache', port: 2013},
-        {label: 'PGAdmin', port: 1980},
-        {label: 'MyAdmin', port: 1979},
-    ];
-
-    for (var i in tools) {
-        check(tools[i])
-            .then(function (tool) {
-               linkContainer.appendChild(createLink(tool.label, tool.url));
-            })
-            .catch (function (error) {
-                console.log(error);
-            });
-    }
+    linkContainer.appendChild(createLink('Supervisor',    baseUrl + ':9001'));
+    linkContainer.appendChild(createLink('Mailcatcher',   baseUrl + ':1080'));
+    linkContainer.appendChild(createLink('Log.io',        baseUrl + ':28778'));
+    linkContainer.appendChild(createLink('OPCache',       baseUrl + ':2013'));
+    linkContainer.appendChild(createLink('PGAdmin',       baseUrl + ':1980'));
+    linkContainer.appendChild(createLink('MyAdmin',       baseUrl + ':1979'));
 
     var hookContainer = document.createElement('div');
     hookContainer.innerHTML = "=";
