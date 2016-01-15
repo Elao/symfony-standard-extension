@@ -94,17 +94,32 @@
         {label: 'MyAdmin', port: 1979},
     ];
 
-    for (var i in tools) {
-        check(tools[i])
-            .then(function (tool) {
-                console.log('add', tool);
-               itemContainer.appendChild(createItem(tool));
-            })
-            .catch (function (error) {
-                console.log(error);
-            });
+    var enabledTools = localStorage.getItem('elao/tools')
+
+    if (enabledTools) {
+        enabledTools = JSON.parse(enabledTools);
+    } else {
+        enabledTools = [];
     }
-console.log(container);
+
+    if (enabledTools.length) {
+        for (var i in enabledTools) {
+            itemContainer.appendChild(createItem(enabledTools[i]));
+        }
+    } else {
+        for (var i in tools) {
+            check(tools[i])
+                .then(function (tool) {
+                   enabledTools.push(tool);
+                   localStorage.setItem('elao/tools', JSON.stringify(enabledTools));
+                   itemContainer.appendChild(createItem(tool));
+                })
+                .catch (function (error) {
+                    console.log(error);
+                });
+        }
+    }
+
     setTimeout(function() {
         document.querySelector('.sf-toolbarreset').appendChild(container);
     }, 1000);
