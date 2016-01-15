@@ -9,18 +9,6 @@
 // ==/UserScript==
 
 (function(){
-    function addStyle( rules, media ) {
-        el = document.createElement( 'style' );
-        el.setAttribute( 'type', 'text/css' );
-        for ( i=0; i<rules.length; i++ ) {
-            el.innerHTML += rules[ i ] + "\n";
-        }
-        if ( typeof media != "undefined" ) {
-            el.innerHTML = "@media " + media + " { \n" + el.innerHTML + "} \n";
-        }
-        document.head.appendChild( el );
-    }
-
     function createLink(name, href) {
         var link = document.createElement('a');
         link.setAttribute('target','blank');
@@ -53,20 +41,48 @@
         });
     }
 
-    addStyle( [
-        "#userscript-tools-bar { position:fixed; top:-30px; right:0; background-color:rgba(0, 0, 0, .4); opacity: .2; border-radius : 0 0 0 4px;  transition: all 500ms; z-index:9999;}",
-        "#userscript-tools-bar:hover { opacity: 1; top:0; }",
-        "#userscript-tools-bar > div#userscript-tools-hook { text-align:center; line-height:20px; }",
-        "#userscript-tools-bar > div > a { display:inline-block; padding:5px; color:white; line-height:20px; font-size:14px; }",
-        "#userscript-tools-bar > div > a:not(:last-child)::after { content : ' | ';}"
-    ] );
+    function createContainer()
+    {
+        var container = document.createElement('div');
+        container.setAttribute('class', 'sf-toolbar-block sf-toolbar-status-normal sf-toolbar-block-right');
+
+        var iconContainer = document.createElement('span');
+        var icon = document.createElement('div');
+        icon.setAttribute('class', 'sf-toolbar-icon');
+        var iconSpan = document.createElement('span');
+        iconSpan.setAttribute('class', 'sf-toolbar-value')
+        iconSpan.innerHTML = 'Tools';
+
+        icon.appendChild(iconSpan);
+        iconContainer.appendChild(icon);
+        container.appendChild(iconContainer);
+
+        var infoContainer = document.createElement('div');
+        infoContainer.setAttribute('class', 'sf-toolbar-info');
+
+        container.appendChild(infoContainer);
+
+        return container;
+    }
+
+    function createItem(tool)
+    {
+        var container = document.createElement('div');
+        container.setAttribute('class', 'sf-toolbar-info-piece');
+
+        var span = document.createElement('span');
+
+        span.appendChild(createLink(tool.label, tool.url));
+
+        container.appendChild(span);
+
+        return container;
+    }
+
+    var container = createContainer();
+    var itemContainer = container.querySelector('.sf-toolbar-info');
 
     var baseUrl = location.protocol + '//' + document.domain;
-    var bar     = document.createElement('div');
-
-    bar.setAttribute('id', 'userscript-tools-bar');
-
-    var linkContainer = document.createElement('div');
 
     var tools = [
         {label: 'MailHog', port: 8025},
@@ -81,20 +97,15 @@
     for (var i in tools) {
         check(tools[i])
             .then(function (tool) {
-               linkContainer.appendChild(createLink(tool.label, tool.url));
+                console.log('add', tool);
+               itemContainer.appendChild(createItem(tool));
             })
             .catch (function (error) {
                 console.log(error);
             });
     }
-
-    var hookContainer = document.createElement('div');
-    hookContainer.innerHTML = "=";
-    hookContainer.setAttribute('id', 'userscript-tools-hook');
-
-    bar.appendChild(linkContainer);
-    bar.appendChild(hookContainer);
-
-    document.body.appendChild(bar);
-
+console.log(container);
+    setTimeout(function() {
+        document.querySelector('.sf-toolbarreset').appendChild(container);
+    }, 1000);
 })();
