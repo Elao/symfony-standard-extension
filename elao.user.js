@@ -8,93 +8,9 @@
 // @version     1
 // ==/UserScript==
 
-(function(){
-    function createLink(name, href) {
-        var link = document.createElement('a');
-        link.setAttribute('target','blank');
-        link.setAttribute('href', href);
-        link.innerHTML = name;
+//(function(){
 
-        return link;
-    }
-
-    function check(tool) {
-        tool.url = baseUrl + ':' + tool.port;
-
-        return new Promise(function(resolve, reject) {
-            var req = new XMLHttpRequest();
-            req.open('GET', tool.url);
-
-            req.onload = function() {
-                if (req.status == 200) {
-                    resolve(tool);
-                } else {
-                    reject(Error(req.statusText));
-                }
-            };
-
-            req.onerror = function() {
-                reject(Error("Erreur réseau"));
-            };
-
-            req.send();
-        });
-    }
-
-    function createContainer()
-    {
-        var container = document.createElement('div');
-        container.setAttribute('class', 'sf-toolbar-block sf-toolbar-status-normal sf-toolbar-block-right');
-
-        var iconContainer = document.createElement('span');
-        var icon = document.createElement('div');
-        icon.setAttribute('class', 'sf-toolbar-icon');
-        var iconSpan = document.createElement('span');
-        iconSpan.setAttribute('class', 'sf-toolbar-value')
-        iconSpan.innerHTML = 'Tools';
-
-        icon.appendChild(iconSpan);
-        iconContainer.appendChild(icon);
-        container.appendChild(iconContainer);
-
-        var infoContainer = document.createElement('div');
-        infoContainer.setAttribute('class', 'sf-toolbar-info');
-
-        container.appendChild(infoContainer);
-
-        return container;
-    }
-
-    function createItem(tool)
-    {
-        var container = document.createElement('div');
-        container.setAttribute('class', 'sf-toolbar-info-piece');
-
-        var span = document.createElement('span');
-
-        span.appendChild(createLink(tool.label, tool.url));
-
-        container.appendChild(span);
-
-        return container;
-    }
-
-    var container = createContainer();
-    var itemContainer = container.querySelector('.sf-toolbar-info');
-
-    var baseUrl = location.protocol + '//' + document.domain;
-
-    var tools = [
-        {label: 'MailHog', port: 8025},
-        {label: 'Supervisor', port: 9001},
-        {label: 'Mailcatcher', port: 1080},
-        {label: 'Log.io', port: 28778},
-        {label: 'OPCache', port: 2013},
-        {label: 'PGAdmin', port: 1980},
-        {label: 'MyAdmin', port: 1979},
-    ];
-
-    var enabledTools = localStorage.getItem('elao/tools')
+    /*var enabledTools = localStorage.getItem('elao/tools')
 
     if (enabledTools) {
         enabledTools = JSON.parse(enabledTools);
@@ -118,9 +34,187 @@
                     console.log(error);
                 });
         }
+    }*/
+
+    function Tool(label, port)
+    {
+        console.log('Tool', label, port);
+        this.label = label;
+        this.port  = port;
+        this.url   = this.host + ':' + this.port;
     }
 
-    setTimeout(function() {
-        document.querySelector('.sf-toolbarreset').appendChild(container);
-    }, 1000);
-})();
+    /**
+     * Host
+     *
+     * @type {String}
+     */
+    Tool.prototype.host = window.location.protocol + '//' + document.domain;
+
+    /**
+     * Get url
+     *
+     * @return {String}
+     */
+    Tool.prototype.getUrl = function()
+    {
+        return this.host + ':' + this.port;
+    };
+
+    /**
+     * Get link element
+     *
+     * @return {Element}
+     */
+    Tool.prototype.getElement = function()
+    {
+        var link = document.createElement('a');
+
+        link.target    = '_blank';
+        link.href      = this.getUrl();
+        link.innerHTML = this.label;
+
+        return link;
+    };
+
+    Tool.prototype.check = function ()
+    {
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttprequestuest();
+            request.open('GET', this.url);
+
+            request.onload = function() {
+                if (request.status == 200) {
+                    resolve(this);
+                } else {
+                    reject(Error(request.statusText));
+                }
+            };
+
+            request.onerror = function() {
+                reject(Error("Erreur réseau"));
+            };
+
+            request.send();
+        });
+    }
+
+    /**
+     * Elao Standard Extension
+     *
+     * @param {Element} parent
+     */
+    function ElaoStandardExtention(parent)
+    {
+        console.log('ElaoStandardExtention', this);
+
+        this.parent    = parent;
+        this.container = this.createContainer();
+        this.element   = this.createBlock();
+        this.tools     = [];
+
+        this.container.appendChild(this.element);
+        this.parent.appendChild(this.container);
+
+        for (var label in this.toolList) {
+            if (this.toolList.hasOwnProperty(label)) {
+                this.addTool(new Tool(label, this.toolList[label]));
+            }
+        }
+    }
+
+    /**
+     * Tools
+     *
+     * @type {Array}
+     */
+    ElaoStandardExtention.prototype.toolList = {
+        'MailHog': 8025,
+        'Supervisor': 9001,
+        'Mailcatcher': 1080,
+        'Log.io': 28778,
+        'OPCache': 2013,
+        'PGAdmin': 1980,
+        'MyAdmin': 1979
+    };
+
+    ElaoStandardExtention.prototype.createContainer = function()
+    {
+        var container = document.createElement('div');
+
+        container.id = 'userscript-tools-bar';
+
+        return container;
+    };
+
+    ElaoStandardExtention.prototype.createBlock = function()
+    {
+        return document.createElement('div');
+    };
+
+    ElaoStandardExtention.prototype.addTool = function(tool)
+    {
+        this.tools.push(tool);
+        this.element.appendChild(tool.getElement());
+    };
+
+    /**
+     * ElaoStandardExtention for Symfony
+     *
+     * @param {Element} parent
+     */
+    function ElaoSymfonyStandardExtention(parent)
+    {
+        ElaoStandardExtention.call(this, parent);
+    }
+
+    ElaoSymfonyStandardExtention.prototype = Object.create(ElaoStandardExtention.prototype);
+    ElaoSymfonyStandardExtention.prototype.constructor = ElaoSymfonyStandardExtention;
+
+    /**
+     * Create container
+     *
+     * @return {Element}
+     */
+    ElaoSymfonyStandardExtention.prototype.createContainer = function()
+    {
+        var container = ElaoStandardExtention.prototype.createContainer.call(this),
+            icon      = document.createElement('div');
+
+        container.className = 'sf-toolbar-block sf-toolbar-status-normal sf-toolbar-block-right';
+        icon.className      = 'sf-toolbar-icon';
+
+        icon.innerHTML = 'Tools';
+
+        return container;
+    };
+
+    ElaoSymfonyStandardExtention.prototype.createBlock = function()
+    {
+        var block = ElaoStandardExtention.prototype.createBlock.call(this);
+
+        block.className = 'sf-toolbar-info';
+
+        return block;
+    };
+
+    ElaoSymfonyStandardExtention.prototype.addTool = function(tool)
+    {
+        this.tools.push(tool);
+        this.element.appendChild(tool.getElement());
+    };
+
+    function onLoad()
+    {
+        var elements = document.getElementsByClassName('sf-toolbar');
+
+        if (elements.length) {
+            new ElaoSymfonyStandardExtention(elements[0]);
+        } else {
+            new ElaoStandardExtention(document.body);
+        }
+    }
+
+    window.addEventListener('load', onLoad);
+    //onLoad();
+//})();
