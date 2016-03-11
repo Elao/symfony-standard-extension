@@ -1,0 +1,34 @@
+{
+  "name": "Elao : Vagrant Extension",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Extension to display available tools when running a project with the elao vagrant stack",
+  "homepage_url": "https://github.com/Elao/symfony-standard-extension",
+  "icons": {
+    "128": "logo.png"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "page_action": {
+    "default_icon": "logo_action.png",
+    "default_title": "Elao : Vagrant Tools",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "http://*.dev/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*.dev/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
