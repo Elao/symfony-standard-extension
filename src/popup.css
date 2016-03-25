@@ -1,0 +1,38 @@
+body {
+    font-family: Arial;
+    font-size: 14px;
+}
+
+#enabledTools {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#enabledTools li a {
+    display: block;
+    min-width: 70px;
+    line-height: 16px;
+    margin: 3px auto;
+    padding: 6px;
+    background-color: #eee;
+    color: #333;
+    text-decoration: none;
+}
+
+#enabledTools li:first-child a {
+    margin-top: 0;
+    border-top-left-radius: 3px 3px;
+    border-top-right-radius: 3px 3px;
+}
+
+#enabledTools li:last-child a {
+    margin-bottom: 0;
+    border-bottom-left-radius: 3px 3px;
+    border-bottom-right-radius: 3px 3px;
+}
+
+#enabledTools li a:hover, #enabledTools li a:focus {
+    background-color: #c8e8c3;
+    outline: none;
+}

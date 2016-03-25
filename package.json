@@ -1,0 +1,16 @@
+{
+  "name": "symfony-standard-extension",
+  "version": "0.0.1",
+  "description": "Add link in your browser",
+  "main": "background.js",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-json-editor": "^2.2.1",
+    "gulp-zip": "^3.1.0",
+    "merge-stream": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "gulp"
+  }
+}
