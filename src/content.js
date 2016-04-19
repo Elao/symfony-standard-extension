@@ -30,8 +30,18 @@ if (!enabledTools) {
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     if ((msg.from === 'popup') && (msg.subject === 'enabledTools')) {
         response(enabledTools);
+    } else if ((msg.from === 'popup') && (msg.subject === 'removeValidation')) {
+        removeValidation();
     }
 });
+
+function removeValidation () {
+    var forms = document.querySelectorAll('form');
+    for (var i in forms) {
+        forms.item(i).setAttribute('novalidate','novalidate');
+    }
+    alert('Validation disabled');
+}
 
 function check(tool) {
     return new Promise(function(resolve, reject) {
