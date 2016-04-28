@@ -1,11 +1,14 @@
 var tools = [
     {label: 'MailHog', port: 8025},
     {label: 'Supervisor', port: 9001},
-    {label: 'Mailcatcher', port: 1080},
+    {label: 'MailCatcher', port: 1080},
     {label: 'Log.io', port: 28778},
-    {label: 'OPCache', port: 2013},
-    {label: 'PGAdmin', port: 1980},
-    {label: 'MyAdmin', port: 1979},
+    {label: 'rTail', port: 8888},
+    {label: 'OPCache Dashboard', port: 2013},
+    {label: 'phpMyAdmin', port: 1979},
+    {label: 'phpPgAdmin', port: 1980},
+    {label: 'phpRedisAdmin', port: 1981},
+    {label: 'RockMongo', port: 1982},
     {label: 'ngrok', port: 4040},
 ];
 
