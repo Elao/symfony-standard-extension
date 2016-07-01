@@ -1,6 +1,6 @@
 {
   "name": "symfony-standard-extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Add link in your browser",
   "main": "background.js",
   "dependencies": {

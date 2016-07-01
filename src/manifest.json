@@ -1,6 +1,6 @@
 {
   "name": "Elao : Vagrant Extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "description": "Extension to display available tools when running a project with the elao vagrant stack",
   "homepage_url": "https://github.com/Elao/symfony-standard-extension",
