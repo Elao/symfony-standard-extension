@@ -16,6 +16,27 @@ function displayTools(enabledTools) {
             chrome.tabs.sendMessage(tabs[0].id, {from: 'popup', subject: 'removeValidation'}, null);
         });
     });
+    var disableJavascript = document.getElementById('disableJavascript');
+    disableJavascript.addEventListener('click', function (event) {
+        chrome.contentSettings.javascript.get({
+            'primaryUrl': 'http://*.dev/*'
+        }, function (details) {
+          var newSetting = details.setting == 'allow' ? 'block' : 'allow';
+          chrome.contentSettings.javascript.set({
+            'primaryPattern': 'http://*.dev/*',
+            'setting': newSetting,
+            'scope': 'regular'
+          });
+          chrome.notifications.create('javascript', {
+              'type': "basic",
+              'title': 'Javascript ' + newSetting + 'ed',
+              'iconUrl': "logo_action.png",
+              'message': "The javascript has been " + newSetting + "ed on the .dev pages"
+          });
+          // Reload the current tab for the change of javascript settings to apply
+          chrome.tabs.reload();
+        });
+    });
 
     links = document.querySelectorAll('#enabledTools a');
     for (var i in links) {
