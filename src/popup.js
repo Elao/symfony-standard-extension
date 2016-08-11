@@ -18,7 +18,7 @@ function displayTools(enabledTools) {
     });
 
     var toggleJavascript = document.getElementById('toggleJavascript');
-    function updateButtonContent(details){
+    function updateButtonContent(details) {
         toggleJavascript.textContent = details.setting == 'allow' ? 'Disable Javascript' : 'Enable Javascript';
     }
     chrome.contentSettings.javascript.get({
