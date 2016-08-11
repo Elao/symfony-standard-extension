@@ -17,38 +17,6 @@ function displayTools(enabledTools) {
         });
     });
 
-    var toggleJavascript = document.getElementById('toggleJavascript');
-    function updateButtonContent(details) {
-        toggleJavascript.textContent = details.setting == 'allow' ? 'Disable Javascript' : 'Enable Javascript';
-    }
-    chrome.contentSettings.javascript.get({
-        'primaryUrl': 'http://*.dev/*'
-    }, updateButtonContent);
-
-    toggleJavascript.addEventListener('click', function (event) {
-        chrome.contentSettings.javascript.get({
-            'primaryUrl': 'http://*.dev/*'
-        }, function (details) {
-            var newSetting = details.setting == 'allow' ? 'block' : 'allow';
-            chrome.contentSettings.javascript.set({
-                'primaryPattern': 'http://*.dev/*',
-                'setting': newSetting,
-                'scope': 'regular'
-            });
-            updateButtonContent(details);
-            chrome.notifications.create('javascript', {
-                'type': "basic",
-                'title': 'Javascript ' + newSetting + 'ed',
-                'iconUrl': "logo_action.png",
-                'message': "The javascript has been " + newSetting + "ed on the .dev pages"
-            });
-            // Close the popup
-            window.close();
-            // Reload the current tab for the change of javascript settings to apply
-            chrome.tabs.reload();
-        });
-    });
-
     links = document.querySelectorAll('#enabledTools a');
     for (var i in links) {
         links[i].addEventListener('click', function (event) {
