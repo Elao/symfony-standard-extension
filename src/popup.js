@@ -17,10 +17,19 @@ function displayTools(enabledTools) {
         });
     });
     var disableJavascript = document.getElementById('disableJavascript');
+    function updateButton(details)
+    {
+      disableJavascript.textContent = details.setting == 'allow' ? 'Disable Javascript' : 'Enable Javascript';
+    }
+    chrome.contentSettings.javascript.get({
+        'primaryUrl': 'http://*.dev/*'
+    }, updateButton );
+
     disableJavascript.addEventListener('click', function (event) {
         chrome.contentSettings.javascript.get({
             'primaryUrl': 'http://*.dev/*'
         }, function (details) {
+          updateButton(details);
           var newSetting = details.setting == 'allow' ? 'block' : 'allow';
           chrome.contentSettings.javascript.set({
             'primaryPattern': 'http://*.dev/*',
