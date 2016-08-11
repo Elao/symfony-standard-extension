@@ -16,34 +16,36 @@ function displayTools(enabledTools) {
             chrome.tabs.sendMessage(tabs[0].id, {from: 'popup', subject: 'removeValidation'}, null);
         });
     });
-    var disableJavascript = document.getElementById('disableJavascript');
-    function updateButton(details)
-    {
-      disableJavascript.textContent = details.setting == 'allow' ? 'Disable Javascript' : 'Enable Javascript';
+
+    var toggleJavascript = document.getElementById('toggleJavascript');
+    function updateButtonContent(details){
+        toggleJavascript.textContent = details.setting == 'allow' ? 'Disable Javascript' : 'Enable Javascript';
     }
     chrome.contentSettings.javascript.get({
         'primaryUrl': 'http://*.dev/*'
-    }, updateButton );
+    }, updateButtonContent);
 
-    disableJavascript.addEventListener('click', function (event) {
+    toggleJavascript.addEventListener('click', function (event) {
         chrome.contentSettings.javascript.get({
             'primaryUrl': 'http://*.dev/*'
         }, function (details) {
-          updateButton(details);
-          var newSetting = details.setting == 'allow' ? 'block' : 'allow';
-          chrome.contentSettings.javascript.set({
-            'primaryPattern': 'http://*.dev/*',
-            'setting': newSetting,
-            'scope': 'regular'
-          });
-          chrome.notifications.create('javascript', {
-              'type': "basic",
-              'title': 'Javascript ' + newSetting + 'ed',
-              'iconUrl': "logo_action.png",
-              'message': "The javascript has been " + newSetting + "ed on the .dev pages"
-          });
-          // Reload the current tab for the change of javascript settings to apply
-          chrome.tabs.reload();
+            var newSetting = details.setting == 'allow' ? 'block' : 'allow';
+            chrome.contentSettings.javascript.set({
+                'primaryPattern': 'http://*.dev/*',
+                'setting': newSetting,
+                'scope': 'regular'
+            });
+            updateButtonContent(details);
+            chrome.notifications.create('javascript', {
+                'type': "basic",
+                'title': 'Javascript ' + newSetting + 'ed',
+                'iconUrl': "logo_action.png",
+                'message': "The javascript has been " + newSetting + "ed on the .dev pages"
+            });
+            // Close the popup
+            window.close();
+            // Reload the current tab for the change of javascript settings to apply
+            chrome.tabs.reload();
         });
     });
 
