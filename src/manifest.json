@@ -20,13 +20,15 @@
   },
   "permissions": [
     "http://*.dev/*",
+    "http://*.vm/*",
     "contentSettings",
     "notifications"
   ],
   "content_scripts": [
     {
       "matches": [
-        "http://*.dev/*"
+        "http://*.dev/*",
+        "http://*.vm/*"
       ],
       "js": [
         "content.js"
